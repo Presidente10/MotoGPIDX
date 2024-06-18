@@ -14,27 +14,27 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Welcome to IDX'),
+      home:  MyHomePage(title: 'Welcome to IDX'),
     );
   }
 }
 
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+   MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   // Definisci le categorie
   final List<Category> categories = [
-    Category(title: 'Category 1', icon: Icons.book),
-    Category(title: 'Category 2', icon: Icons.movie),
-    Category(title: 'Category 3', icon: Icons.music_note),
-    Category(title: 'Category 4', icon: Icons.sports),
-    Category(title: 'Category 5', icon: Icons.restaurant),
-    Category(title: 'Category 6', icon: Icons.shopping_cart),
-    Category(title: 'Category 7', icon: Icons.airplanemode_active),
-    Category(title: 'Category 8', icon: Icons.people),
-    Category(title: 'Category 9', icon: Icons.work),
+    Category(title: 'MotoGp'),
+    Category(title: 'Moto2'),
+    Category(title: 'Moto3'),
+    Category(title: 'MotoE'),
+    Category(title: '350cc'),
+    Category(title: '250cc'),
+    Category(title: '125cc'),
+    Category(title: '80cc'),
+    Category(title: '50cc'),
   ];
 
   @override
@@ -43,30 +43,43 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: GridView.count(
-        crossAxisCount: 3, // 3 colonne nella griglia
-        children: categories.map((Category category) {
-          return InkWell(
-            onTap: () {
-              // Aggiungi l'azione per gestire il tap sulla categoria
-              // Per esempio, navigare verso una nuova pagina
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CategoryPage(category)),
-              );
-            },
-            child: Card(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Icon(category.icon, size: 50),
-                  const SizedBox(height: 8),
-                  Text(category.title),
-                ],
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          // Spazio vuoto per separare l'app bar dalle categorie
+          const SizedBox(height: 20),
+          // ListView orizzontale per le categorie
+          SizedBox(
+            height: 120, // Altezza desiderata delle categorie
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CategoryPage(categories[index])),
+                      );
+                    },
+                    child: Text(categories[index].title),
+                    style: TextButton.styleFrom(
+      
+                      backgroundColor: Colors.blue,
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                      textStyle: const TextStyle(fontSize: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        }).toList(),
+          ),
+        ],
       ),
     );
   }
@@ -74,9 +87,8 @@ class MyHomePage extends StatelessWidget {
 
 class Category {
   final String title;
-  final IconData icon;
 
-  Category({required this.title, required this.icon});
+  Category({required this.title});
 }
 
 // Esempio di pagina per la singola categoria
